@@ -4,16 +4,33 @@ from flask import(
 
 app= Flask(__name__)
 
-ROOT_DIRECTORY="."
+ROOT_DIRECTORY=os.path.abspath(".")
 x={1:1,2:2}
 
+
 def render_listing(directory):
-    ls = os.listdir(directory)
-    ls_directory = []
+    print(directory)
+    parent_directory=os.path.join(directory,"..")
+    parent_directory=os.path.normpath(parent_directory)
+    print(parent_directory)
+    ls_raw = os.listdir(directory)
+    ls_raw.append("..")
+    ls=[]
+    for i in ls_raw:
+        ls_new=os.path.join(directory,i)
+        ls_new=os.path.normpath(ls_new)
+
+        ls.append(ls_new)
+
+    print(ls_raw)
+    print(ls)
+    ls_directory =[]
     ls_file = []
     for x in ls:
+        ls_new = x.replace(ROOT_DIRECTORY, "")
         if os.path.isdir(x):
-            ls_directory.append({"url": x, "name": x})
+            href=ls_new.replace("\\","/")
+            ls_directory.append({"href": href, "name": x})
         else:
             ls_file.append(x)
 
@@ -21,11 +38,8 @@ def render_listing(directory):
 
 @app.route("/")
 def root():
-    directory=""
-    if directory =="":
-        directory=ROOT_DIRECTORY
-
-    return render_listing(directory)
+    print(ROOT_DIRECTORY)
+    return render_listing(ROOT_DIRECTORY)
 
 @app.route("/<path:directory>")
 def ls(directory):

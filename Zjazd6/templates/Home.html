@@ -7,7 +7,7 @@
 <body>
 <ul>
 {% for each in ls_directory %}
-    <li><a href="{{ each.url }}">{{each.name}}</a></li>
+    <li><a href="{{ each.href }}">{{each.name}}</a></li>
 {% endfor %}
 {% for each in ls_file %}
     <li>{{each}}</li>
