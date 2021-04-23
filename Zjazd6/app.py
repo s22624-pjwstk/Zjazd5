@@ -4,10 +4,29 @@ from flask import(
 
 app= Flask(__name__)
 
-directory="."
+ROOT_DIRECTORY="."
+x={1:1,2:2}
+
+def render_listing(directory):
+    ls = os.listdir(directory)
+    ls_directory = []
+    ls_file = []
+    for x in ls:
+        if os.path.isdir(x):
+            ls_directory.append({"url": x, "name": x})
+        else:
+            ls_file.append(x)
+
+    return render_template("Home.html", ls_directory=ls_directory, ls_file=ls_file, directory=directory)
 
 @app.route("/")
 def root():
+    directory=""
+    if directory =="":
+        directory=ROOT_DIRECTORY
 
-    ls=os.listdir(directory)
-    return render_template("Home.html",ls=ls,directory=directory)
+    return render_listing(directory)
+
+@app.route("/<path:directory>")
+def ls(directory):
+    return render_listing(directory)
