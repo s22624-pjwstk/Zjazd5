@@ -26,13 +26,15 @@ def render_listing(directory):
     print(ls)
     ls_directory =[]
     ls_file = []
-    for x in ls:
+    for x in ls_raw:
         ls_new = x.replace(ROOT_DIRECTORY, "")
         if os.path.isdir(x):
             href=ls_new.replace("\\","/")
-            ls_directory.append({"href": href, "name": x})
+            ls_directory.append({"href": href, "name":x})
+            print(x)
         else:
             ls_file.append(x)
+
 
     return render_template("Home.html", ls_directory=ls_directory, ls_file=ls_file, directory=directory)
 
